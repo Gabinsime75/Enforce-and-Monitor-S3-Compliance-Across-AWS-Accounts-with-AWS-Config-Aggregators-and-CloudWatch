@@ -1,0 +1,204 @@
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "AllowedResources",
+            "Effect": "Allow",
+            "Action": [
+                "events:*",
+                "a4b:*",
+                "acm-pca:*",
+                "apigateway:*",
+                "athena:*",
+                "backup-storage:*",
+                "acm:*",
+                "cloud9:*",
+                "clouddirectory:*",
+                "cloudfront:*",
+                "cloudsearch:*",
+                "cloudshell:*",
+                "cloudtrail:*",
+                "cloudwatch:*",
+                "logs:*",
+                "codeguru-profiler:*",
+                "codeguru-reviewer:*",
+                "codestar-connections:*",
+                "codestar-notifications:*",
+                "cognito-identity:*",
+                "cognito-sync:*",
+                "cognito-idp:*",
+                "config:*",
+                "dlm:*",
+                "dynamodb:*",
+                "dax:*",
+                "ec2-instance-connect:*",
+                "ec2messages:*",
+                "ecr:*",
+                "eks:*",
+                "elasticbeanstalk:*",
+                "elasticfilesystem:*",
+                "events:*",
+                "pipes:*",
+                "scheduler:*",
+                "schemas:*",
+                "fms:*",
+                "glue:*",
+                "iotanalytics:*",
+                "kinesisanalytics:*",
+                "firehose:*",
+                "kinesisvideo:*",
+                "kms:*",
+                "lambda:*",
+                "lex:*",
+                "machinelearning:*",
+                "opsworks-cm:*",
+                "opsworks:*",
+                "rds:*",
+                "redshift:*",
+                "tag:*",
+                "resource-groups:*",
+                "sdb:*",
+                "secretsmanager:*",
+                "sns:*",
+                "states:*",
+                "ssm-contacts:*",
+                "ssm:*",
+                "ssm-guiconnect:*",
+                "ssm-incidents:*",
+                "ssmmessages:*",
+                "resource-explorer:*",
+                "trustedadvisor:*",
+                "waf-regional:*",
+                "access-analyzer:*",
+                "auditmanager:*",
+                "ebs:*",
+                "sqs:*",
+                "appsync:*",
+                "wafv2:*",
+                "s3:*",
+                "waf:*",
+                "kinesis:*",
+                "s3:*",
+                "ecs:*",
+                "route53:*",
+                "application-autoscaling:*",
+                "autoscaling:*",
+                "autoscaling-plans:*",
+                "elasticloadbalancing:*",
+                "ec2:*",
+                "elasticloadbalancing:*",
+                "backup:*",
+                "cloudformation:*",
+                "iam:*"
+            ],
+            "Resource": "*",
+            "Condition": {
+                "StringEquals": {
+                    "aws:RequestedRegion": [
+                        "us-east-2",
+                        "us-east-1"
+                    ]
+                }
+            }
+        },
+        {
+            "Sid": "CreateUserWithBoundary",
+            "Effect": "Deny",
+            "Action": [
+                "iam:CreateUser",
+                "iam:PutUserPermissionsBoundary",
+                "iam:PutRolePermissionsBoundary",
+                "iam:CreateRole"
+            ],
+            "Resource": "*",
+            "Condition": {
+                "StringNotEquals": {
+                    "iam:PermissionsBoundary": "arn:aws:iam::164789147993:policy/LabSecureAccess"
+                }
+            }
+        },
+        {
+            "Sid": "ProtectBuiltinRoles",
+            "Effect": "Deny",
+            "Action": [
+                "iam:CreateUser",
+                "iam:DetachRolePolicy",
+                "iam:DeleteRolePolicy",
+                "iam:UpdateRoleDescription",
+                "iam:DeleteRole",
+                "iam:AttachRolePolicy",
+                "iam:UpdateRole",
+                "iam:PutRolePolicy",
+                "iam:DeleteRolePermissionsBoundary",
+                "iam:PutRolePermissionsBoundary"
+            ],
+            "Resource": [
+                "arn:aws:iam::164789147993:role/OrganizationAccountAccessRole",
+                "arn:aws:iam::164789147993:role/AWSServiceRoleForOrganizations",
+                "arn:aws:iam::164789147993:role/AWSServiceRoleForSupport",
+                "arn:aws:iam::164789147993:role/AWSServiceRoleForTrustedAdvisor",
+                "arn:aws:iam::164789147993:role/AWSServiceRoleForDAX",
+                "arn:aws:iam::164789147993:role/LabUserRole",
+                "arn:aws:iam::164789147993:role/ScriptUserRole"
+            ]
+        },
+        {
+            "Sid": "PlatformDeniedPermissions",
+            "Effect": "Deny",
+            "Action": [
+                "aws-marketplace:AcceptAgreementApprovalRequest",
+                "aws-marketplace:Subscribe",
+                "dynamodb:DescribeReservedCapacityOfferings",
+                "dynamodb:PurchaseReservedCapacityOfferings",
+                "ec2:AcceptReservedInstancesExchangeQuote",
+                "ec2:CreateReservedInstancesListing",
+                "ec2:CreateCapacityReservation",
+                "ec2:ModifyReservedInstances",
+                "ec2:PurchaseReservedInstancesOffering",
+                "ec2:PurchaseHostReservation",
+                "ec2:PurchaseScheduledInstances",
+                "elasticache:DescribeReservedCacheNodesOfferings",
+                "elasticache:PurchaseReservedCacheNodesOffering",
+                "es:DescribeReservedElasticsearchInstanceOfferings",
+                "es:DescribeReservedInstanceOfferings",
+                "es:PurchaseReservedElasticsearchInstanceOffering",
+                "es:PurchaseReservedInstanceOffering",
+                "rds:DescribeReservedDBInstances",
+                "rds:DescribeReservedDBInstancesOfferings",
+                "rds:PurchaseReservedDBInstancesOffering",
+                "redshift:DescribeReservedNodeOfferings",
+                "redshift:PurchaseReservedNodeOffering"
+            ],
+            "Resource": "*"
+        },
+        {
+            "Sid": "ProtectPolicy",
+            "Effect": "Deny",
+            "Action": [
+                "iam:CreatePolicyVersion",
+                "iam:DeletePolicy",
+                "iam:DeletePolicyVersion",
+                "iam:SetDefaultPolicyVersion"
+            ],
+            "Resource": [
+                "arn:aws:iam::164789147993:policy/LOD_Managed_-_Allow_SNS",
+                "arn:aws:iam::164789147993:policy/Allow_-_IAM,_CloudWatch,_CloudTrail,_Logs,_S3",
+                "arn:aws:iam::164789147993:policy/Allow_-_SSM",
+                "arn:aws:iam::164789147993:policy/Allow_-_AWS_Config",
+                "arn:aws:iam::164789147993:policy/LabSecureAccess"
+            ]
+        },
+        {
+            "Sid": "PreventUserDeleteBoundary",
+            "Effect": "Deny",
+            "Action": [
+                "iam:DeleteUserPermissionsBoundary",
+                "iam:DeleteRolePermissionsBoundary"
+            ],
+            "Resource": [
+                "arn:aws:iam::*:user/*",
+                "arn:aws:iam::*:role/*"
+            ]
+        }
+    ]
+}
